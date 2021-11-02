@@ -1,10 +1,12 @@
-import logo from "./logo.svg";
 import "./App.css";
+import "./components/calculator/Calculator";
+import Calculator from "./components/calculator/Calculator";
 
 function App() {
   return (
     <div className="App">
-      <p>Hello World</p>
+      <p>Calculator</p>
+      <Calculator />
     </div>
   );
 }
