@@ -1,31 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import NumberPad from "../numberPad/NumberPad";
 import NotationBox from "../notationBox/NotationBox";
 import "./Calculator.css";
+import { calculatorContext } from "../../context/CalculatorContext";
 
 function Calculator() {
-  var notations = ["/", "x", "-", "+"];
-  var topNotations = ["(", ")", "%", "AC"];
+  var notations = ["/", "x", "-", "+", "="];
+  var topNotations = ["AC", "+/-", "%"];
 
-  const [equation, setEquation] = useState("");
+  const calculatorHooks = useContext(calculatorContext).calculatorHooks;
 
   return (
     <div className="calculator-display">
-      <div className="input-display">{equation}</div>
-      <div className="numbers-display">
-        <div className="top-notation-display">
-          {topNotations.map((notation, index) => (
-            <NotationBox
-              key={index}
-              color={"#C8CAD3"}
-              notation={notation}
-            ></NotationBox>
-          ))}
-        </div>
-        <div className="number-pad-display">
-          <NumberPad />
-          <div className="notations-display">
-            {notations.map((notation, index) => (
+      <div className="input-display">{calculatorHooks.number}</div>
+      <div className="horizontal-flex">
+        <div className="numbers-display">
+          <div className="top-notation-display">
+            {topNotations.map((notation, index) => (
               <NotationBox
                 key={index}
                 color={"#C8CAD3"}
@@ -33,6 +24,17 @@ function Calculator() {
               ></NotationBox>
             ))}
           </div>
+          <NumberPad />
+        </div>
+        <div className="notations-display">
+          {notations.map((notation, index) => (
+            <NotationBox
+              key={index}
+              color={"#EFB51A"}
+              notation={notation}
+              index={index}
+            />
+          ))}
         </div>
       </div>
     </div>
