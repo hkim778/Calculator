@@ -13,12 +13,22 @@ const useCalculator = () => {
   function onClickNotations(notation, index) {
     switch (notation) {
       case "AC":
+        setEquation("");
+        setNumber("0");
+        setIsAddingNotation(false);
         break;
       case "+/-":
+        if (!isNaN(parseFloat(number))) {
+          setNumber((parseFloat(number) * -1).toString());
+        }
         break;
       case "%":
+        if (!isNaN(parseFloat(number))) {
+          setNumber((parseFloat(number) * 0.01).toString());
+        }
         break;
       case "=":
+        calculate();
         break;
       default:
         onClickCalculationNotation(notation);
@@ -27,11 +37,19 @@ const useCalculator = () => {
     }
   }
 
-  function calculate() {}
+  function calculate() {
+    var terms = (equation + number).split(" ");
+    if (isNaN(parseFloat(terms[terms.length - 1]))) {
+      terms.pop();
+    }
+    terms = terms.join("").replace(/[^-()\d/*+.]/g, "");
+    setEquation(equation + number + " = ");
+    setNumber(eval(terms));
+  }
 
   function onClickCalculationNotation(notation) {
     if (!isAddingNotation) {
-      setEquation(equation + number.toString());
+      setEquation(equation + number.toString() + " ");
     }
 
     setIsAddingNotation(true);
@@ -40,7 +58,7 @@ const useCalculator = () => {
 
   function onClickNumber(clickedValue) {
     if (isAddingNotation) {
-      setEquation(equation + " " + number + " ");
+      setEquation(equation + number + " ");
       setIsAddingNotation(false);
       if (clickedValue === ".") {
         setNumber("0.");

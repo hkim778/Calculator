@@ -5,7 +5,7 @@ import "./Calculator.css";
 import { calculatorContext } from "../../context/CalculatorContext";
 
 function Calculator() {
-  var notations = ["/", "x", "-", "+", "="];
+  var notations = ["/", "*", "-", "+", "="];
   var topNotations = ["AC", "+/-", "%"];
 
   const calculatorHooks = useContext(calculatorContext).calculatorHooks;
