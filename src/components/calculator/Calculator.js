@@ -12,7 +12,10 @@ function Calculator() {
 
   return (
     <div className="calculator-display">
-      <div className="input-display">{calculatorHooks.number}</div>
+      <div className="input-display">
+        <span className="equation">{calculatorHooks.displayEquation()}</span>
+        <span className="current-num">{calculatorHooks.number}</span>
+      </div>
       <div className="horizontal-flex">
         <div className="numbers-display">
           <div className="top-notation-display">

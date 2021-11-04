@@ -1,114 +1,77 @@
 import { useState } from "react";
 
 const useCalculator = () => {
+  // not the apple way, but the equation way
   const [equation, setEquation] = useState("");
   const [number, setNumber] = useState("0");
-  const [currentNotation, setCurrentNotation] = useState(-1);
-  const [storedValue, setStoredValue] = useState(0);
-  const [storedNotation, setStoredNotation] = useState("");
+  const [notation, setNotation] = useState("");
+  const [isAddingNotation, setIsAddingNotation] = useState(false);
+
+  var notations = ["/", "x", "-", "+", "="];
+  var topNotations = ["AC", "+/-", "%"];
 
   function onClickNotations(notation, index) {
     switch (notation) {
       case "AC":
-        setEquation("");
-        setNumber(0);
-        setCurrentNotation(-1);
-        setStoredValue(0);
-        setStoredNotation("");
         break;
       case "+/-":
-        setNumber((parseFloat(number) * -1).toString());
         break;
       case "%":
-        setNumber(number * 0.01);
         break;
       case "=":
-        console.log(storedNotation);
-        if (storedNotation !== "") {
-          onClickCalculationNotation(storedNotation);
-        } else {
-        }
         break;
       default:
-        setStoredNotation(notation);
         onClickCalculationNotation(notation);
-        setCurrentNotation(index);
+
         break;
     }
   }
 
+  function calculate() {}
+
   function onClickCalculationNotation(notation) {
-    // need some changes
-    if (storedValue !== 0) {
-      switch (notation) {
-        case "/":
-          setNumber((storedValue / parseFloat(number)).toString());
-          setStoredValue(storedValue / parseFloat(number));
-          break;
-        case "x":
-          setNumber((storedValue * parseFloat(number)).toString());
-          setStoredValue(storedValue * parseFloat(number));
-          break;
-        case "-":
-          setNumber((storedValue - parseFloat(number)).toString());
-          setStoredValue(storedValue - parseFloat(number));
-          break;
-        case "+":
-          setNumber((storedValue + parseFloat(number)).toString());
-          setStoredValue(storedValue + parseFloat(number));
-          break;
-        default:
-          break;
-      }
+    if (!isAddingNotation) {
+      setEquation(equation + number.toString());
     }
+
+    setIsAddingNotation(true);
+    setNumber(notation);
   }
 
   function onClickNumber(clickedValue) {
-    if (currentNotation === -1) {
-      console.log(number);
-      //if notation is not clicked
-      if (clickedValue === ".") {
-        if (
-          parseFloat(number) % 1 === 0 &&
-          number.toString().indexOf(".") === -1
-        ) {
-          setNumber(number + ".");
-        }
-      } else {
-        // if numbers are clicked
-        console.log(parseFloat(number));
-        if (parseFloat(number) !== 0) {
-          setNumber(number + clickedValue);
-        } else {
-          if (parseFloat(number) % 1 !== 0) {
-            //when there's a decimal
-            setNumber(number + clickedValue);
-          } else {
-            setNumber(clickedValue.toString());
-          }
-        }
-      }
-    } else {
-      setStoredValue(parseFloat(number));
+    if (isAddingNotation) {
+      setEquation(equation + " " + number + " ");
+      setIsAddingNotation(false);
       if (clickedValue === ".") {
         setNumber("0.");
       } else {
-        setNumber(clickedValue.toString());
+        setNumber(clickedValue);
       }
-      //need to store the current number
-
-      setCurrentNotation(-1);
+    } else {
+      if (clickedValue === ".") {
+        if (number.toString().indexOf(".") === -1) {
+          setNumber(number.toString() + clickedValue);
+        }
+      } else {
+        if (parseFloat(number) === 0) {
+          setNumber(clickedValue);
+        } else {
+          setNumber(number.toString() + clickedValue);
+        }
+      }
     }
   }
 
+  function displayEquation() {
+    return equation.toString() + " " + number.toString();
+  }
+
   return {
-    equation,
-    setEquation,
-    currentNotation,
     number,
-    setCurrentNotation,
-    onClickNotations,
+    equation,
     onClickNumber,
+    onClickNotations,
+    displayEquation,
   };
 };
 
