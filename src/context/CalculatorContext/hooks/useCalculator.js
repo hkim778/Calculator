@@ -49,7 +49,11 @@ const useCalculator = () => {
 
   function onClickCalculationNotation(notation) {
     if (!isAddingNotation) {
-      setEquation(equation + number.toString() + " ");
+      if (equation.toString().indexOf("=") !== -1) {
+        setEquation(number.toString() + " ");
+      } else {
+        setEquation(equation + number.toString() + " ");
+      }
     }
 
     setIsAddingNotation(true);
@@ -57,6 +61,9 @@ const useCalculator = () => {
   }
 
   function onClickNumber(clickedValue) {
+    if (equation.toString().indexOf("=") !== -1) {
+      setEquation("");
+    }
     if (isAddingNotation) {
       setEquation(equation + number + " ");
       setIsAddingNotation(false);
