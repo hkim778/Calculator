@@ -4,11 +4,7 @@ const useCalculator = () => {
   // not the apple way, but the equation way
   const [equation, setEquation] = useState("");
   const [number, setNumber] = useState("0");
-  const [notation, setNotation] = useState("");
   const [isAddingNotation, setIsAddingNotation] = useState(false);
-
-  var notations = ["/", "x", "-", "+", "="];
-  var topNotations = ["AC", "+/-", "%"];
 
   function onClickNotations(notation, index) {
     switch (notation) {
